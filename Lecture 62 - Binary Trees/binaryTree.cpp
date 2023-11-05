@@ -9,45 +9,39 @@ public:
     Node *left;
     Node *right;
 
-    Node(int d)
+    Node(int data)
     {
-        data = d;
-        left = NULL;
-        right = NULL;
+        this->data = data;
+        this->left = NULL;
+        this->right = NULL;
     }
 };
 
-Node *buildTree(Node *root)
+// Function to build a binary tree recursively
+Node *buildTree(Node *node)
 {
+    cout << "Enter The Data" << endl;
     int data;
-
-    cout << "Enter Data : ";
     cin >> data;
 
-    root = new Node(data);
+    node = new Node(data);
 
-    // base condition
     if (data == -1)
     {
-        return NULL;
+        return NULL; // If data is -1, it indicates an empty node
     }
 
-    //  inserting in left and right of node
-    cout << "Enter data in left of " << data << " : " << endl;
-    root->left = buildTree(root->left);
-
-    cout << "Enter data in right of " << data << " : " << endl;
-    root->right = buildTree(root->right);
-
-    return root;
+    cout << "Enter the left child of " << data << endl;
+    node->left = buildTree(node->left);
+    cout << "Enter the right child of " << data << endl;
+    node->right = buildTree(node->right);
+    return node;
 }
 
-void levelOrderTriversal(Node *root)
+// Function to perform level-order traversal of a binary tree
+void levelOrderTrivarsal(Node *root)
 {
-    // using queue fot level Order Triversal
-
     queue<Node *> q;
-    int count = 1;
     q.push(root);
     q.push(NULL);
 
@@ -59,74 +53,140 @@ void levelOrderTriversal(Node *root)
         if (temp == NULL)
         {
             cout << endl;
-
             if (!q.empty())
             {
-                q.push(NULL);
+                q.push(NULL); // Use NULL as a level separator
             }
         }
         else
         {
-            count++;
             cout << temp->data << " ";
 
             if (temp->left)
             {
                 q.push(temp->left);
             }
-
             if (temp->right)
             {
                 q.push(temp->right);
             }
         }
     }
-
-    cout << "HEight is : " << count << endl;
 }
-void inOrderTrivarsal(Node *root)
-{
 
-    if (root == NULL)
+// Function to perform in-order traversal of a binary tree
+void inOrderTrivarsal(Node *node)
+{
+    if (node == NULL)
     {
         return;
     }
 
-    inOrderTrivarsal(root->left);
-    cout << root->data << " ";
-    inOrderTrivarsal(root->right);
+    inOrderTrivarsal(node->left);
+    cout << node->data << " ";
+    inOrderTrivarsal(node->right);
 }
+
+// Function to perform pre-order traversal of a binary tree
+void preOderTrivarsal(Node *node)
+{
+    if (node == NULL)
+    {
+        return;
+    }
+
+    cout << node->data << " ";
+    preOderTrivarsal(node->left);
+    preOderTrivarsal(node->right);
+}
+
+// Function to perform post-order traversal of a binary tree
+void postOrderTrivarsal(Node *node)
+{
+    if (node == NULL)
+    {
+        return;
+    }
+
+    postOrderTrivarsal(node->left);
+    postOrderTrivarsal(node->right);
+    cout << node->data << " ";
+}
+
+// Function to build a binary tree from level order input
+void buildFromLevelOrder(Node *&node)
+{
+    queue<Node *> q;
+    cout << "Enter data for root :  ";
+    int data;
+    cin >> data;
+    node = new Node(data);
+    q.push(node);
+
+    while (!q.empty())
+    {
+        Node *temp = q.front();
+        q.pop();
+
+        cout << "Enter data for the left node for " << temp->data << endl;
+        int leftData;
+        cin >> leftData;
+        if (leftData != -1)
+        {
+            temp->left = new Node(leftData);
+            q.push(temp->left);
+        }
+
+        cout << "Enter data for the right node for " << temp->data << endl;
+        int rightData;
+        cin >> rightData;
+        if (rightData != -1)
+        {
+            temp->right = new Node(rightData);
+            q.push(temp->right);
+        }
+    }
+}
+
+// Function to count the number of leaf nodes in a binary tree
+void countLeafNodes(Node *node, int &count)
+{
+    if (node == NULL)
+    {
+        return;
+    }
+
+    countLeafNodes(node->left, count);
+    if (node->left == NULL && node->right == NULL)
+    {
+        count++;
+        cout << "Here " << count << endl;
+    }
+    countLeafNodes(node->right, count);
+}
+
 int main()
 {
+    cout << "Creating Tree : " << endl;
     Node *root = NULL;
 
-    // add node in tree without using buildTree function
-    //  tree representation
-    //          1
-    //        /   \
-    //       2     3
-    //      / \   / \
-    //     4   5 6   7
-    //   / \     \
-    //  8   9     10
-
-    root = new Node(1);
-    root->left = new Node(2);
-    root->right = new Node(3);
-    root->left->left = new Node(4);
-    root->left->right = new Node(5);
-    root->right->left = new Node(6);
-    root->right->right = new Node(7);
-    root->left->left->left = new Node(8);
-    root->left->left->right = new Node(9);
-    root->right->left->right = new Node(10);
-    
-
+    // input will be 1 3 7 -1 -1 11 -1 -1 5 17 -1 -1 -1
     // root = buildTree(root);
-    // cout << endl;
+    buildFromLevelOrder(root);
 
-    levelOrderTriversal(root);
+    // levelOrderTrivarsal(root);
+
+    // cout << "In - order Trivarsal  - ";
+    // inOrderTrivarsal(root);
+
+    // cout << "\nPre - order Trivarsal  - ";
+    // preOderTrivarsal(root);
+
+    // cout << "\nPost - order Trivarsal  - ";
+    // postOrderTrivarsal(root);
+
     cout << endl;
-
-    inOrderTrivarsal(root);
+    int count = 0;
+    countLeafNodes(root, count);
+    cout << "Number of leaf nodes : " << count;
 }
