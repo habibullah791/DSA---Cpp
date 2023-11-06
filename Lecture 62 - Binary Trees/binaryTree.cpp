@@ -247,6 +247,45 @@ bool isBalanced(Node *root)
 
     return isBalancedFast(root).first;
 }
+
+pair<bool, int> sumOfTree(Node *node)
+{
+
+    if (node == NULL)
+    {
+        pair<bool, int> p = make_pair(true, 0);
+        return p;
+    }
+    if (node->left == NULL && node->right == NULL)
+    {
+        pair<bool, int> p = make_pair(true, node->data);
+        return p;
+    }
+
+    pair<bool, int> left = sumOfTree(node->left);
+    pair<bool, int> right = sumOfTree(node->right);
+
+    bool sum = (left.second + right.second) == node->data;
+
+    pair<bool, int> ans;
+
+    if (left.first && right.first && sum)
+    {
+        ans.first = true;
+        ans.second = 2 * node->data;
+    }
+    else
+    {
+        ans.first = false;
+    }
+    return ans;
+}
+
+bool isSumOfTreeIsEqual(Node *node)
+{
+    return sumOfTree(node).first;
+}
+
 int main()
 {
     cout << "Creating Tree : " << endl;
@@ -274,4 +313,5 @@ int main()
     cout << "Depth of the binary tree : " << maxDepth(root) << endl;
     cout << "Diameter of the binary tree : " << diameterOFTree(root) << endl;
     cout << "Is binary tree Balanced: " << isBalanced(root) << endl;
+    cout << "Is Sum Of binary tree is Equal: " << isSumOfTreeIsEqual(root) << endl;
 }
