@@ -1,5 +1,6 @@
 #include <iostream>
 #include <queue>
+#include <utility>
 using namespace std;
 
 class Node
@@ -160,9 +161,76 @@ void countLeafNodes(Node *node, int &count)
     if (node->left == NULL && node->right == NULL)
     {
         count++;
-        cout << "Here " << count << endl;
     }
     countLeafNodes(node->right, count);
+}
+
+//  Function to find the max depth of the tree
+int maxDepth(Node *node)
+{
+
+    if (node == NULL)
+    {
+        return 0;
+    }
+
+    int left = maxDepth(node->left);
+    int right = maxDepth(node->right);
+
+    int max = std::max(left, right) + 1;
+
+    return max;
+}
+pair<int, int> fastDiameter(Node *root)
+{
+    if (root == NULL)
+    {
+        pair<int, int> p = make_pair(0, 0);
+        return p;
+    }
+
+    pair<int, int> left = fastDiameter(root->left);
+    pair<int, int> right = fastDiameter(root->right);
+
+    int option1 = left.first;
+    int option2 = right.first;
+    int option3 = left.second + right.second + 1;
+
+    pair<int, int> ans;
+
+    ans.first = std::max(option1, std::max(option2, option3));
+    ans.second = std::max(left.second, right.second) + 1;
+
+    return ans;
+}
+
+// Function to return diameter of the tree
+int diameterOFTree(Node *node)
+{
+    return fastDiameter(node).first;
+}
+
+// Functioj to check if the tree is balanced
+bool isBalanced(Node *root)
+{
+    if (root == NULL)
+    {
+        return true;
+    }
+
+    bool left = isBalanced(root->left);
+    bool right = isBalanced(root->right);
+
+    bool diff = abs(maxDepth(root->left) - maxDepth(root->right)) <= 1;
+
+    if (left && right && diff)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 int main()
@@ -188,5 +256,8 @@ int main()
     cout << endl;
     int count = 0;
     countLeafNodes(root, count);
-    cout << "Number of leaf nodes : " << count;
+    cout << "Number of leaf nodes : " << count << endl;
+    cout << "Depth of the binary tree : " << maxDepth(root) << endl;
+    cout << "Diameter of the binary tree : " << diameterOFTree(root) << endl;
+    cout << "Is binary tree Balanced: " << isBalanced(root) << endl;
 }
