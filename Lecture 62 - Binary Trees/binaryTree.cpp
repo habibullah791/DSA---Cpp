@@ -211,28 +211,42 @@ int diameterOFTree(Node *node)
 }
 
 // Functioj to check if the tree is balanced
-bool isBalanced(Node *root)
+pair<bool, int> isBalancedFast(Node *root)
 {
     if (root == NULL)
     {
-        return true;
+        pair<bool, int> p = make_pair(true, 0);
+        return p;
     }
 
-    bool left = isBalanced(root->left);
-    bool right = isBalanced(root->right);
+    pair<bool, int> left = isBalancedFast(root->left);
+    pair<bool, int> right = isBalancedFast(root->right);
 
-    bool diff = abs(maxDepth(root->left) - maxDepth(root->right)) <= 1;
+    int leftAns = left.first;
+    int rightAns = right.first;
 
-    if (left && right && diff)
+    bool diff = abs(left.second - right.second) <= 1;
+
+    pair<bool, int> ans;
+
+    ans.second = std::max(left.second, right.second) + 1;
+
+    if (leftAns && rightAns && diff)
     {
-        return true;
+        ans.first = true;
     }
     else
     {
-        return false;
+        ans.first = false;
     }
-}
 
+    return ans;
+}
+bool isBalanced(Node *root)
+{
+
+    return isBalancedFast(root).first;
+}
 int main()
 {
     cout << "Creating Tree : " << endl;
