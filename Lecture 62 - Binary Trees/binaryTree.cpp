@@ -286,6 +286,27 @@ bool isSumOfTreeIsEqual(Node *node)
     return sumOfTree(node).first;
 }
 
+Node *searchBST(Node *root, int val)
+{
+    if (root == NULL)
+    {
+        return NULL;
+    }
+
+    if (root->data == val)
+    {
+        return root;
+    }
+    if (val < root->data)
+    {
+        return searchBST(root->left, val);
+    }
+
+    else
+    {
+        return searchBST(root->right, val);
+    }
+}
 int main()
 {
     cout << "Creating Tree : " << endl;
@@ -314,4 +335,5 @@ int main()
     cout << "Diameter of the binary tree : " << diameterOFTree(root) << endl;
     cout << "Is binary tree Balanced: " << isBalanced(root) << endl;
     cout << "Is Sum Of binary tree is Equal: " << isSumOfTreeIsEqual(root) << endl;
+    cout << "Search in BST : " << searchBST(root, 3)->data << endl;
 }
