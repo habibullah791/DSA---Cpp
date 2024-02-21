@@ -1,55 +1,17 @@
-# Based on given number, print even or odd. No if else or ternary operator.
+# We are sorting the list [11, 8, 13, 13, 2, 1] using insertion sort, you need to calculate how many swaps will occur after the 4 and onward passes, 1 pass is 1 iteration through the array.
+# python
+def get_secret_key(public_key):
+    """Generates a secret key from a public key using recursive calls."""
 
+    print(public_key, end="")  # Print the current public key value
 
-# def print_even_odd(num):
-#     if (num & 1):
-#         return 'Odd'
-#     else:
-#         return 'Even'
-
-
-# print(print_even_odd(2))
-
-# "Flatten a nested array. e.g Input: [1, 2, [3, 4, 5, [6]], 7, 8]
-# Output: [1, 2, 3, 4, 5, 6, 7, 8]"
-
-
-# # write a function such that if we pass 100 it returns 101 and if we pass 101 it returns 100 without if else and ternary operator
-# def count_characters_frequency(s):
-#     # Assuming the string only contains ASCII characters (you can adapt this for Unicode if needed)
-#     char_frequency = [0] * 128  # 128 is the number of ASCII characters
-
-#     for char in s:
-#         char_frequency[ord(char)] += 1
-
-#     # Printing the frequencies
-#     for i in range(128):
-#         if char_frequency[i] > 0:
-#             print(f"Character '{chr(i)}' occurs {char_frequency[i]} times.")
-
-
-# # Example usage
-# input_string = "examplestring"
-# count_characters_frequency(input_string)
-
-
-# Write a function foo(x) which get an integer (it can be 12 or 18 just),
-# return 12 if 18 passed and 18 if 12 passed, don't use if else ...
-
-
-def count_occurrences(arr):
-    occurrences = {}
-
-    for num in arr:
-        if num in occurrences:
-            occurrences[num] += 1
-        else:
-            occurrences[num] = 1
-
-    for num, count in occurrences.items():
-        print(f"Number {num} occurs {count} times.")
+    if public_key < 14:
+        return get_secret_key(get_secret_key(get_secret_key(public_key + 1)))
+    else:
+        return public_key
 
 
 # Example usage:
-numbers = [4, 2, 8, 3, 4, 2, 8, 4, 5, 6, 2, 8, 7, 9, 2, 1, 8, 4, 3, 5]
-count_occurrences(numbers)
+public_key = 12
+secret_key = get_secret_key(public_key)
+print("Secret key:", secret_key)

@@ -15,21 +15,35 @@ def removeDuplicatesFromLinkedList(linkedList):
             currentNode = currentNode.next
 
     return linkedList
+def test(linkedList):
+    x = linkedList
+    while x is not None:                      
+        y = x.next
+        while y is not None and (y.value % x.value == 0):
+            y_old = y
+            y = y.next
+            y_old = None
+        x.next = y
+        x = x.next
 
-
-linkedList = LinkedList(1)
-linkedList.next = LinkedList(1)
-linkedList.next.next = LinkedList(3)
-linkedList.next.next.next = LinkedList(4)
+    return linkedList
+        
+linkedList = LinkedList(4)
+linkedList.next = LinkedList(8)
+linkedList.next.next = LinkedList(12)
+linkedList.next.next.next = LinkedList(5)
 linkedList.next.next.next.next = LinkedList(4)
-linkedList.next.next.next.next.next = LinkedList(4)
-linkedList.next.next.next.next.next.next = LinkedList(5)
-linkedList.next.next.next.next.next.next.next = LinkedList(6)
-linkedList.next.next.next.next.next.next.next.next = LinkedList(6)
+linkedList.next.next.next.next.next = LinkedList(2)
+linkedList.next.next.next.next.next.next = LinkedList(3)
+linkedList.next.next.next.next.next.next.next = LinkedList(5)
 
-result = removeDuplicatesFromLinkedList(linkedList)
+
+
+result = test(linkedList)
+# result = removeDuplicatesFromLinkedList(linkedList)
 
 while result is not None:
+    # print(111)
     print(result.value)
     result = result.next
 
